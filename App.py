@@ -1,5 +1,3 @@
-# Install libraries (run once)
-!pip install pandas numpy scikit-learn xgboost joblib
 
 import pandas as pd
 import numpy as np
