@@ -24,12 +24,14 @@ def assign_cluster(lat, lon):
 # Streamlit App
 st.title("Real Estate Interactive Pricing Model")
 
-st.write("\n**Step 1: Select property location**")
+st.write("\n**Step 1: Select property location (click on map)**")
 
-# Map interface
+# Create map with click support
 m = folium.Map(location=[28.55, -81.60], zoom_start=12)
+m.add_child(folium.LatLngPopup())
 map_data = st_folium(m, width=700, height=500)
 
+# Handle map click
 if map_data and map_data['last_clicked']:
     lat = map_data['last_clicked']['lat']
     lon = map_data['last_clicked']['lng']
@@ -63,3 +65,4 @@ if map_data and map_data['last_clicked']:
 
 else:
     st.warning("Click on the map to select property location.")
+
