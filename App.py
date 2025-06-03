@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-import joblib
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -9,11 +8,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_squared_error
 from xgboost import XGBRegressor
 
-# Load data from Google Sheets
-sheet_id = "1fdE0TPaHxHWp4caNIuPlnNY6zH4cw4rauwHRGbcqNzA"
-sheet_name = "Sheet1"
-url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url)
+# Load data directly from CSV in repo
+df = pd.read_csv("data.csv")
 
 # Clean column names
 df.columns = df.columns.str.strip().str.replace(' ', '_').str.lower()
@@ -82,9 +78,9 @@ residual_std = np.std(residuals)
 st.title("Real Estate Pricing Model")
 
 # Build dropdowns dynamically from dataset
-city_options = sorted(df['city'].unique())
-product_style_options = sorted(df['product_style'].unique())
-seller_options = sorted(df['seller'].unique())
+city_options = sorted(df['city'].dropna().unique())
+product_style_options = sorted(df['product_style'].dropna().unique())
+seller_options = sorted(df['seller'].dropna().unique())
 
 # User inputs
 city = st.selectbox("City:", city_options)
@@ -111,6 +107,7 @@ if st.button("Predict Sale Price"):
 
     st.subheader(f"Estimated Sale Price: ${predicted_price:,.2f}")
     st.write(f"Confidence Interval (95%): ${lower_bound:,.2f} - ${upper_bound:,.2f}")
+
 
 
 
